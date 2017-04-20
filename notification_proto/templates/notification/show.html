@@ -1,10 +1,13 @@
 <h1>THIS IS NOTIFICATION SHOW PAGE</h1>
-
+{% if user.is_authenticated %}
+	<h3>我是 {{ user }}</h3>
+{% endif %}
 <ul>
+<p>以下列出所有傳送的訊號：</p>
 {% for noti in object_list %}
     <li> <u>{{ noti.sender }}</u> 傳 {{ noti.content }}] 給 <u>{{ noti.receiver }}</u> 在 <i>{{ noti.create_time }}</i></li>
 {% empty %}
-    <li>No articles yet.</li>
+    <li>目前沒有任何信號.</li>
 {% endfor %}
 </ul>
 
