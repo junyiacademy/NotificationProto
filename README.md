@@ -8,7 +8,7 @@
 
 Now you can run the website locally.
 
-1. http://localhost:8000/admin/ to enter the login panel
+1. http://localhost:8000/admin/ to enter the admin panel
 2. http://localhost:8000/notification/create to create new notification message
 3. you can first use the signup link to create new user
 4. http://localhost:8000/notification/show to show all the messeges
