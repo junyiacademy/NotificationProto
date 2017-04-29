@@ -1,0 +1,71 @@
+<h1>THIS IS NOTIFICATION TEST PAGE</h1>
+<div style="padding-left: 30px">
+    {% if user.is_authenticated %}
+
+        <div style="padding-bottom: 40px">
+            <span>我是 {{ user }}</span>
+            <a href="{% url 'account_logout' %}">登出</a>
+            <hr />
+        </div>
+
+
+        <div style="padding-bottom: 40px">
+            <div>傳送訊息（通知）：</div>
+            <hr />
+            <form action="/notification/" method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <input type="submit" value="Submit" />
+            </form>
+        </div>
+
+        <div style="padding-bottom: 40px">
+            <div>即時訊息（通知）：</div>
+            <hr />
+            <div id="instant-msg"></div>
+        </div>
+
+
+        <div style="padding-bottom: 40px">
+            <div>所有收到的訊息（通知）：</div>
+            <hr />
+            <div id="inbox">
+            {% for noti in notifications %}
+                <div>
+                    <span>{{ noti.actor }}</span> says:
+                    <span>{{ noti.verb }}</span>
+                    <small>{{ noti.timesince }} ago</small>
+                </div>
+            {% empty %}
+                <span>目前沒有收到的訊息（通知）。</span>
+            {% endfor %}
+            </div>
+        </div>
+
+    {% else %}
+        <span>請先登入或註冊：</span>
+        <a href="{% url 'account_login' %}">登入</a>
+        <a href="{% url 'account_signup' %}">註冊</a>
+
+    {% endif %}
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script>
+
+    socket = new WebSocket("ws://" + window.location.host + "/{{ user }}?group_a=false&group_b=true&group_c=true");
+
+    socket.onmessage = function(e) {
+        var data = JSON.parse(e.data);
+        var displayMsg = "<div>" +data.actor+ " says: " +data.message+ "<small> now</small></div>";
+        $('#instant-msg').prepend(displayMsg);
+        $('#inbox').prepend(displayMsg);
+    };
+
+    socket.onopen = function() {
+        console.log( "{{ user }} is connected" );
+    };
+
+    // Call onopen directly if socket is already open
+    if (socket.readyState == WebSocket.OPEN) socket.onopen();
+</script>

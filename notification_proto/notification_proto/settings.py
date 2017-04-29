@@ -44,6 +44,8 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'notification',
+    'notifications',
+    'channels',
 ]
 
 MIDDLEWARE = [
@@ -111,8 +113,8 @@ AUTH_PASSWORD_VALIDATORS = [
 # https://docs.djangoproject.com/en/1.10/topics/i18n/
 
 SITE_ID = 1
-LOGIN_REDIRECT_URL = '/notification/show'
-ACCOUNT_LOGOUT_REDIRECT_URL = '/notification/show'
+LOGIN_REDIRECT_URL = '/notification/'
+ACCOUNT_LOGOUT_REDIRECT_URL = '/notification/'
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 LANGUAGE_CODE = 'en-us'
@@ -130,3 +132,11 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
 STATIC_URL = '/static/'
+
+
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "asgiref.inmemory.ChannelLayer",
+        "ROUTING": "notification_proto.routing.channel_routing",
+    },
+}
